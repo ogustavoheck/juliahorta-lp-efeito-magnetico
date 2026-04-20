@@ -649,9 +649,22 @@
 </section>
 
 <script>
+// Captura UTMs da URL ao carregar a página
+const _utms = (function() {
+  const p = new URLSearchParams(window.location.search);
+  return {
+    utm_source:   p.get('utm_source')   || '',
+    utm_medium:   p.get('utm_medium')   || '',
+    utm_campaign: p.get('utm_campaign') || '',
+    utm_content:  p.get('utm_content')  || '',
+    utm_term:     p.get('utm_term')     || '',
+    page_url:     window.location.href
+  };
+})();
+
 function handleSubmit() {
-  const nome = document.getElementById('nome').value.trim();
-  const email = document.getElementById('email').value.trim();
+  const nome     = document.getElementById('nome').value.trim();
+  const email    = document.getElementById('email').value.trim();
   const whatsapp = document.getElementById('whatsapp').value.trim();
 
   if (!nome || !email || !whatsapp) {
@@ -659,18 +672,14 @@ function handleSubmit() {
     return;
   }
 
-  // Mostra sucesso imediatamente
   document.getElementById('form-fields').style.display = 'none';
   document.getElementById('success').style.display = 'block';
 
-  // Envia para Formspree em background sem bloquear
-  fetch('https://formspree.io/f/mvzdpdzg', {
+  fetch('https://n8n.ghxmkt.com/webhook/julia-horta-efeito-magnetico', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ nome, email, whatsapp })
+    body: JSON.stringify({ nome, email, whatsapp, ..._utms })
   }).catch(() => {});
-  
-
 }
 
 function scrollToForm() {
